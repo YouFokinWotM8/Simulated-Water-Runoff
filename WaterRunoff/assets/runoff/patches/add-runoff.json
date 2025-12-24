@@ -1,0 +1,32 @@
+[
+  {
+    "file": "game:blocktypes/stone/rock", 
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [ { "name": "Runoff" } ]
+  },
+  {
+    "file": "game:blocktypes/soil/soil", 
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [ { "name": "Runoff" } ]
+  },
+  {
+    "file": "game:blocktypes/wood/woodtyped/planks", 
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [ { "name": "Runoff" } ]
+  },
+  {
+    "file": "game:blocktypes/roofing/*", 
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [ { "name": "Runoff" } ]
+  },
+  {
+    "file": "game:blocktypes/generic/microblock", 
+    "op": "addmerge",
+    "path": "/behaviors",
+    "value": [ { "name": "Runoff" } ]
+  }
+]
