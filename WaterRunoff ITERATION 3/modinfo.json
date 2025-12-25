@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "modid": "runoffmod",
+  "name": "Simulated Water Runoff",
+  "version": "1.0.0",
+  "dependencies": {
+    "game": "1.21.6"
+  }
+}
