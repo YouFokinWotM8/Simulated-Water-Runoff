@@ -1,4 +1,5 @@
-using System.Linq; // Required for .Append()
+using System;
+using System.Linq;
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.MathTools;
@@ -9,37 +10,43 @@ namespace RunoffMod
     {
         public static float GlobalRainLevel = 0f;
 
+        // Config (written by ConfigLib GUI into ModConfig/runoffsettings.json)
+        public static RunOffSettings Settings { get; private set; } = new RunOffSettings();
+        public static int SettingsVersion { get; private set; } = 0;
+
+        private const string SettingsFileName = "runoffsettings.json";
+
         public override void Start(ICoreAPI api)
         {
-            // Register the behavior class so the game knows it exists
             api.RegisterBlockBehaviorClass("Runoff", typeof(BlockBehaviorRunoff));
+
+            // Load once on startup (client/server safe)
+            LoadSettings(api);
         }
 
-        // BRUTE FORCE INJECTION
-        // This runs after all JSON assets are loaded. We iterate over every block in the game
-        // and attach the behavior dynamically.
         public override void AssetsFinalize(ICoreAPI api)
         {
             base.AssetsFinalize(api);
 
+            // Iterate ALL blocks to apply the behavior
             foreach (Block block in api.World.Blocks)
             {
-                if (block == null || block.Code == null) continue;
+                if (block == null || block.Code == null || block.Id == 0) continue;
 
-                // --- FILTERS ---
-                // Skip Air
-                if (block.Id == 0) continue;
+                // --- EXCLUSIONS ---
+                if (block.BlockMaterial == EnumBlockMaterial.Leaves) continue;
+                if (block.BlockMaterial == EnumBlockMaterial.Plant) continue;
+                if (block.BlockMaterial == EnumBlockMaterial.Liquid) continue;
+                if (block.BlockMaterial == EnumBlockMaterial.Snow) continue;
+                if (block.BlockMaterial == EnumBlockMaterial.Fire) continue;
 
-                // Skip Liquids (Water, Lava, etc)
-                if (block.IsLiquid()) continue;
+                if (block.RenderPass == EnumChunkRenderPass.Meta) continue;
 
-                // Optional: Skip plants or things with no collision if you find they look weird
-                // if (block.CollisionBoxes == null) continue; 
+                if (block.CollisionBoxes == null || block.CollisionBoxes.Length == 0) continue;
 
-                // Prevent duplicates if you kept the JSON file
                 if (block.HasBehavior<BlockBehaviorRunoff>()) continue;
 
-                // --- INJECTION ---
+                // --- INJECT BEHAVIOR ---
                 BlockBehaviorRunoff behavior = new BlockBehaviorRunoff(block);
 
                 if (block.BlockBehaviors == null)
@@ -51,13 +58,13 @@ namespace RunoffMod
                     block.BlockBehaviors = block.BlockBehaviors.Append(behavior).ToArray();
                 }
 
-                // Important: Manually trigger OnLoaded because the game missed it during JSON loading
                 behavior.OnLoaded(api);
             }
         }
 
         public override void StartClientSide(ICoreClientAPI api)
         {
+            // Update Global Rain Level
             api.Event.RegisterGameTickListener((dt) =>
             {
                 var player = api.World.Player;
@@ -66,8 +73,38 @@ namespace RunoffMod
                 BlockPos pos = player.Entity.Pos.AsBlockPos;
                 ClimateCondition conds = api.World.BlockAccessor.GetClimateAt(pos, EnumGetClimateMode.NowValues);
 
-                if (conds != null) GlobalRainLevel = conds.Rainfall;
-            }, 200);
+                GlobalRainLevel = (conds != null) ? conds.Rainfall : 0f;
+            }, 500);
+
+            // Reload settings occasionally so GUI edits can take effect without rebuild.
+            // (Worst case: you change settings in GUI and it applies within a few seconds.)
+            api.Event.RegisterGameTickListener((dt) =>
+            {
+                LoadSettings(api);
+            }, 2000);
+        }
+
+        private void LoadSettings(ICoreAPI api)
+        {
+            try
+            {
+                var loaded = api.LoadModConfig<RunOffSettings>(SettingsFileName);
+                if (loaded == null)
+                {
+                    // Create default config if missing
+                    loaded = new RunOffSettings();
+                    api.StoreModConfig(loaded, SettingsFileName);
+                }
+
+                Settings = loaded;
+                SettingsVersion++;
+            }
+            catch (Exception e)
+            {
+                api.Logger.Warning($"[RunoffMod] Failed to load {SettingsFileName}: {e}");
+                // Keep existing Settings if load fails, but bump version so dependents can re-check if needed
+                SettingsVersion++;
+            }
         }
     }
 }
