@@ -1,0 +1,379 @@
+{
+  "version": 2,
+  "file": "runoffsettings.json",
+  "patches": {
+    "integer": {
+      "runoffmod:config/runoffsettings.json": {
+        "TickGateModulo": "TICK_GATE_MODULO",
+        "MaxSpawnsPerBlockTick": "MAX_SPAWNS_PER_BLOCK_TICK",
+        "TrailSegments": "TRAIL_SEGMENTS",
+        "ColorR": "COLOR_R",
+        "ColorG": "COLOR_G",
+        "ColorB": "COLOR_B",
+        "DropAlpha": "DROP_ALPHA",
+        "SplashAlpha": "SPLASH_ALPHA",
+        "TrailAlpha": "TRAIL_ALPHA",
+        "SplashMinQty": "SPLASH_MIN_QTY",
+        "SplashAddQty": "SPLASH_ADD_QTY"
+      }
+    },
+    "float": {
+      "runoffmod:config/runoffsettings.json": {
+        "MaxDistance": "MAX_DISTANCE",
+        "FaceSpawnChance": "FACE_SPAWN_CHANCE",
+        "EdgeSpawnChance": "EDGE_SPAWN_CHANCE",
+        "ChanceTopEdge": "EDGE_SPAWN_CHANCE",
+        "WallMinY": "WALL_MIN_Y",
+        "WallMaxY": "WALL_MAX_Y",
+        "DropSize": "DROP_SIZE",
+        "FaceClearance": "FACE_CLEARANCE",
+        "TopEdgeExtraOut": "TOPEDGE_EXTRA_OUT",
+        "GravityConst": "GRAVITY_CONST",
+        "LifePaddingSeconds": "LIFE_PADDING",
+        "TrailLength": "TRAIL_LENGTH",
+        "TrailSideJitter": "TRAIL_SIDE_JITTER",
+        "WallSurfaceProbeIn": "WALL_PROBE_IN",
+        "TrailMinSize": "TRAIL_MIN_SIZE",
+        "TrailMaxSize": "TRAIL_MAX_SIZE",
+        "SplashMinSize": "SPLASH_MIN_SIZE",
+        "SplashMaxSize": "SPLASH_MAX_SIZE"
+      }
+    }
+  },
+  "settings": {
+    "integer": {
+      "TICK_GATE_MODULO": {
+        "name": "tick-gate-modulo",
+        "comment": "Lower = more frequent spawns.",
+        "weight": 1.0,
+        "default": 10,
+        "range": {
+          "min": 1,
+          "max": 60,
+          "step": 1
+        }
+      },
+      "MAX_SPAWNS_PER_BLOCK_TICK": {
+        "name": "max-spawns-per-block-tick",
+        "comment": "Max drips a single block can spawn per tick pass (combined face+edge).",
+        "weight": 1.1,
+        "default": 2,
+        "range": {
+          "min": 1,
+          "max": 10,
+          "step": 1
+        }
+      },
+      "TRAIL_SEGMENTS": {
+        "name": "trail-segments",
+        "comment": "How many trail particles per streak.",
+        "weight": 3.0,
+        "default": 10,
+        "range": {
+          "min": 0,
+          "max": 30,
+          "step": 1
+        }
+      },
+      "COLOR_R": {
+        "name": "color-r",
+        "comment": "Red channel (0\u2013255).",
+        "weight": 10.0,
+        "default": 106,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "COLOR_G": {
+        "name": "color-g",
+        "comment": "Green channel (0\u2013255).",
+        "weight": 10.1,
+        "default": 195,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "COLOR_B": {
+        "name": "color-b",
+        "comment": "Blue channel (0\u2013255).",
+        "weight": 10.2,
+        "default": 207,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "DROP_ALPHA": {
+        "name": "drop-alpha",
+        "comment": "Opacity of drip particles (0\u2013255).",
+        "weight": 10.3,
+        "default": 255,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "SPLASH_ALPHA": {
+        "name": "splash-alpha",
+        "comment": "Opacity of splash particles (0\u2013255).",
+        "weight": 10.4,
+        "default": 235,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "TRAIL_ALPHA": {
+        "name": "trail-alpha",
+        "comment": "Opacity of streak particles (0\u2013255).",
+        "weight": 10.5,
+        "default": 235,
+        "range": {
+          "min": 0,
+          "max": 255,
+          "step": 1
+        }
+      },
+      "SPLASH_MIN_QTY": {
+        "name": "splash-min-qty",
+        "comment": "Minimum number of splash particles per impact.",
+        "weight": 4.8,
+        "default": 3,
+        "range": {
+          "min": 0,
+          "max": 20,
+          "step": 1
+        }
+      },
+      "SPLASH_ADD_QTY": {
+        "name": "splash-add-qty",
+        "comment": "Additional random splash particles added per impact.",
+        "weight": 4.9,
+        "default": 3,
+        "range": {
+          "min": 0,
+          "max": 20,
+          "step": 1
+        }
+      }
+    },
+    "float": {
+      "FACE_SPAWN_CHANCE": {
+        "name": "face-spawn-chance",
+        "comment": "Chance to spawn a wall-face drip attempt per eligible face.",
+        "weight": 1.2,
+        "default": 0.55,
+        "range": {
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.01
+        }
+      },
+      "EDGE_SPAWN_CHANCE": {
+        "name": "edge-spawn-chance",
+        "comment": "Chance to spawn a top-edge drip attempt per eligible face.",
+        "weight": 1.3,
+        "default": 0.55,
+        "range": {
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.01
+        }
+      },
+      "DROP_SIZE": {
+        "name": "drop-size",
+        "comment": "Size of each drip particle (cube size).",
+        "weight": 2.0,
+        "default": 0.3,
+        "range": {
+          "min": 0.05,
+          "max": 0.6,
+          "step": 0.01
+        }
+      },
+      "FACE_CLEARANCE": {
+        "name": "face-clearance",
+        "comment": "How far outside the wall the drip center sits. Smaller = closer to the face.",
+        "weight": 2.1,
+        "default": 0.0005,
+        "range": {
+          "min": 0.0,
+          "max": 0.05,
+          "step": 0.0005
+        }
+      },
+      "TOPEDGE_EXTRA_OUT": {
+        "name": "topedge-extra-out",
+        "comment": "Extra outward push for top-edge drips so they don't clip the block below.",
+        "weight": 2.2,
+        "default": 0.02,
+        "range": {
+          "min": -0.05,
+          "max": 0.2,
+          "step": 0.001
+        }
+      },
+      "WALL_MIN_Y": {
+        "name": "wall-min-y",
+        "comment": "Lowest spawn height on the wall face (0\u20131 block height).",
+        "weight": 2.5,
+        "default": 0.15,
+        "range": {
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.01
+        }
+      },
+      "WALL_MAX_Y": {
+        "name": "wall-max-y",
+        "comment": "Highest spawn height on the wall face (0\u20131 block height).",
+        "weight": 2.6,
+        "default": 0.95,
+        "range": {
+          "min": 0.0,
+          "max": 1.0,
+          "step": 0.01
+        }
+      },
+      "TRAIL_LENGTH": {
+        "name": "trail-length",
+        "comment": "How far the streak extends downward along the wall.",
+        "weight": 3.1,
+        "default": 0.85,
+        "range": {
+          "min": 0.1,
+          "max": 2.0,
+          "step": 0.01
+        }
+      },
+      "TRAIL_MIN_SIZE": {
+        "name": "trail-min-size",
+        "comment": "Minimum size of streak particles.",
+        "weight": 3.2,
+        "default": 0.12,
+        "range": {
+          "min": 0.02,
+          "max": 0.5,
+          "step": 0.01
+        }
+      },
+      "TRAIL_MAX_SIZE": {
+        "name": "trail-max-size",
+        "comment": "Maximum size of streak particles.",
+        "weight": 3.3,
+        "default": 0.18,
+        "range": {
+          "min": 0.02,
+          "max": 0.7,
+          "step": 0.01
+        }
+      },
+      "TRAIL_SIDE_JITTER": {
+        "name": "trail-side-jitter",
+        "comment": "Side-to-side randomness for the streak line.",
+        "weight": 3.4,
+        "default": 0.03,
+        "range": {
+          "min": 0.0,
+          "max": 0.2,
+          "step": 0.001
+        }
+      },
+      "WALL_PROBE_IN": {
+        "name": "wall-probe-in",
+        "comment": "How far to probe into the block to confirm the wall surface exists.",
+        "weight": 3.5,
+        "default": 0.22,
+        "range": {
+          "min": 0.05,
+          "max": 0.4,
+          "step": 0.01
+        }
+      },
+      "SPLASH_MIN_SIZE": {
+        "name": "splash-min-size",
+        "comment": "Minimum size for splash particles.",
+        "weight": 4.6,
+        "default": 0.25,
+        "range": {
+          "min": 0.05,
+          "max": 1.0,
+          "step": 0.01
+        }
+      },
+      "SPLASH_MAX_SIZE": {
+        "name": "splash-max-size",
+        "comment": "Maximum size for splash particles.",
+        "weight": 4.7,
+        "default": 0.4,
+        "range": {
+          "min": 0.05,
+          "max": 1.5,
+          "step": 0.01
+        }
+      },
+      "MAX_DISTANCE": {
+        "name": "max-distance",
+        "comment": "Distance from the player beyond which runoff particles won\u2019t spawn.",
+        "weight": 9.0,
+        "default": 32.0,
+        "range": {
+          "min": 8.0,
+          "max": 128.0,
+          "step": 1.0
+        }
+      },
+      "GRAVITY_CONST": {
+        "name": "gravity-const",
+        "comment": "Controls fall timing used to sync splash to drip impact.",
+        "weight": 9.5,
+        "default": 9.81,
+        "range": {
+          "min": 1.0,
+          "max": 30.0,
+          "step": 0.01
+        }
+      },
+      "LIFE_PADDING": {
+        "name": "life-padding",
+        "comment": "Extra lifespan added so the drip doesn\u2019t vanish before the splash.",
+        "weight": 9.6,
+        "default": 0.01,
+        "range": {
+          "min": 0.0,
+          "max": 0.25,
+          "step": 0.005
+        }
+      }
+    }
+  },
+  "formatting": [
+    {
+      "type": "separator",
+      "title": "Runoff Settings",
+      "weight": 0.1
+    },
+    {
+      "type": "separator",
+      "title": "Spawning",
+      "weight": 1.15
+    },
+    {
+      "type": "separator",
+      "title": "Particles",
+      "weight": 2.9
+    },
+    {
+      "type": "separator",
+      "title": "Color",
+      "weight": 9.9
+    }
+  ]
+}
